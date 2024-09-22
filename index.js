@@ -15,6 +15,8 @@ app.use(express.json());
 
 const UserRoutes = require("./routes/UserRoutes");
 app.use("/api/users", UserRoutes);
+const StoreRoutes = require("./routes/StoreRoutes");
+app.use("/api/stores", StoreRoutes);
 
 app.get("/test-route", (_req, res) => {
     return res.status(200).json({
