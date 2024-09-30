@@ -126,8 +126,68 @@ const profile = (req, res) => {
     });
 }
 
+const getUserByUserInfo = (req, res) => {
+    let userBody = req.body;
+
+    if (!userBody.name || !userBody.lastName || !userBody.email || !userBody.username) {
+        return res.status(400).json({
+            "status": "error",
+            "message": "Faltan datos"
+        });
+    }
+
+    User.findOne({ name: userBody.name, lastName: userBody.lastName, email: userBody.email, username: userBody.username}).select({ password: 0 }).then(user => {
+        if (!user) {
+            return res.status(404).json({
+                "status": "error",
+                "message": "Información incorrecta"
+            });
+        }
+
+        return res.status(200).json({
+            "id": user._id
+        });
+    }).catch(() => {
+        return res.status(404).json({
+            "status": "error",
+            "message": "Error while finding user"
+        });
+    });
+}
+
+const updatePassword = async (req, res) => {
+    let userBody = req.body;
+    let userId = req.query.userId;
+
+    if (!userBody.password) {
+        return res.status(400).json({
+            "status": "error",
+            "message": "Faltan datos"
+        });
+    }
+
+    let pwd = await bcrypt.hash(userBody.password, 10);
+
+    User.findOneAndUpdate({ _id: userId }, { password: pwd }, { new: true }).then(inventoryUpdated => {
+        if (!inventoryUpdated) {
+            return res.status(404).json({
+                "mensaje": "Inventory not found"
+            });
+        }
+        return res.status(200).send({
+            inventory: inventoryUpdated
+        });
+    }).catch(() => {
+        return res.status(404).json({
+            "mensaje": "Error while finding and updating inventory"
+        });
+    });
+}
+
 module.exports = {
     register,
     loginUser,
-    profile
+    profile,
+    getUserByUserInfo,
+    updatePassword
 }
