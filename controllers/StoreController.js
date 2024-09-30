@@ -59,7 +59,7 @@ const create = async (req, res) => {
 const myObject = async (req, res) => {
     let userId = req.user.id;
 
-    Store.find({ user: userId }).then(store => {
+    Store.findOne({ user: userId }).then(store => {
         if (!store) {
             return res.status(404).json({
                 "status": "error",
