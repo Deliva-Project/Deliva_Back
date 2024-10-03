@@ -62,6 +62,45 @@ const create = async (req, res) => {
     }
 }
 
+const getMyProducts = async (req, res) => {
+    let userId = req.user.id;
+    let storeId;
+
+    try {
+        const store = await Store.findOne({ user: userId });
+      
+        if (!store) {
+          return res.status(404).json({
+            "message": "No store available..."
+          });
+        }
+      
+        storeId = store._id;
+      
+    } catch (error) {
+        return res.status(500).json({
+            "message": "Error while finding store"
+        });
+    }
+
+    Product.find({ store: storeId }).then(products => {
+        if (!products) {
+            return res.status(404).json({
+                "message": "No products avaliable..."
+            });
+        }
+
+        return res.status(200).json({
+            products
+        });
+    }).catch(() => {
+        return res.status(500).json({
+            "message": "Error while finding products"
+        });
+    });
+}
+
 module.exports = {
-    create
+    create,
+    getMyProducts
 }

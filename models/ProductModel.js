@@ -14,14 +14,15 @@ const ProductSchema = Schema({
         type: String
     },
     photo: {
-        type: String
+        type: String,
+        default: "https://res.cloudinary.com/dfocnzgji/image/upload/v1727715381/producto_ztmqss.avif"
     },
     expirationDate: {
         type: Date
     },
-    category: {
+    /*category: {
         type: String
-    },
+    },*/
     store: {
         type: Schema.ObjectId,
         ref: "Store"

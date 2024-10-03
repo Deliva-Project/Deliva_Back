@@ -19,6 +19,9 @@ const UserSchema = Schema({
     role: {
         type: String,
         default: "Client"
+    },
+    verificationCode: {
+        type: String
     }
 });
 
