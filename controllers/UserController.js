@@ -237,18 +237,18 @@ const updatePassword = async (req, res) => {
 
     let pwd = await bcrypt.hash(userBody.password, 10);
 
-    User.findOneAndUpdate({ _id: userId }, { password: pwd }, { new: true }).then(inventoryUpdated => {
-        if (!inventoryUpdated) {
+    User.findOneAndUpdate({ _id: userId }, { password: pwd }, { new: true }).then(userUpdated => {
+        if (!userUpdated) {
             return res.status(404).json({
-                "mensaje": "Inventory not found"
+                "mensaje": "User not found"
             });
         }
         return res.status(200).send({
-            inventory: inventoryUpdated
+            "message": "success"
         });
     }).catch(() => {
         return res.status(404).json({
-            "mensaje": "Error while finding and updating inventory"
+            "mensaje": "Error while finding and updating user"
         });
     });
 }

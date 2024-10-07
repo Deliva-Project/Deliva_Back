@@ -15,7 +15,7 @@ const ProductSchema = Schema({
     },
     photo: {
         type: String,
-        default: "https://res.cloudinary.com/dfocnzgji/image/upload/v1727715381/producto_ztmqss.avif"
+        default: "https://res.cloudinary.com/dfocnzgji/image/upload/v1727953299/producto_ajpltw.png"
     },
     expirationDate: {
         type: Date
@@ -23,6 +23,10 @@ const ProductSchema = Schema({
     /*category: {
         type: String
     },*/
+    deleted: {
+        type: Boolean,
+        default: false
+    },
     store: {
         type: Schema.ObjectId,
         ref: "Store"

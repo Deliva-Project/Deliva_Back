@@ -83,7 +83,7 @@ const getMyProducts = async (req, res) => {
         });
     }
 
-    Product.find({ store: storeId }).then(products => {
+    Product.find({ store: storeId, deleted: false }).then(products => {
         if (!products) {
             return res.status(404).json({
                 "message": "No products avaliable..."
@@ -100,7 +100,35 @@ const getMyProducts = async (req, res) => {
     });
 }
 
+const update = async (req, res) => {
+    let productId = req.query.productId
+    let productBody = req.body;
+
+    if (!productBody.name || !productBody.stock || !productBody.price || !productBody.typePrice || !productBody.expirationDate) {
+        return res.status(400).json({
+            "status": "error",
+            "message": "Faltan datos"
+        });
+    }
+
+    Product.findOneAndUpdate({ _id: productId }, productBody, { new: true }).then(productUpdated => {
+        if (!productUpdated) {
+            return res.status(404).json({
+                "mensaje": "Product not found"
+            });
+        }
+        return res.status(200).send({
+            "message": "success"
+        });
+    }).catch(() => {
+        return res.status(404).json({
+            "mensaje": "Error while finding and updating product"
+        });
+    });
+}
+
 module.exports = {
     create,
-    getMyProducts
+    getMyProducts,
+    update
 }
