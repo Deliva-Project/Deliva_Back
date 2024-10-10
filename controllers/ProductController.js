@@ -71,6 +71,7 @@ const getMyProducts = async (req, res) => {
       
         if (!store) {
           return res.status(404).json({
+            "status": "error",
             "message": "No store available..."
           });
         }
@@ -79,6 +80,7 @@ const getMyProducts = async (req, res) => {
       
     } catch (error) {
         return res.status(500).json({
+            "status": "error",
             "message": "Error while finding store"
         });
     }
@@ -86,6 +88,7 @@ const getMyProducts = async (req, res) => {
     Product.find({ store: storeId, deleted: false }).then(products => {
         if (!products) {
             return res.status(404).json({
+                "status": "error",
                 "message": "No products avaliable..."
             });
         }
@@ -95,13 +98,14 @@ const getMyProducts = async (req, res) => {
         });
     }).catch(() => {
         return res.status(500).json({
+            "status": "error",
             "message": "Error while finding products"
         });
     });
 }
 
 const update = async (req, res) => {
-    let productId = req.query.productId
+    let productId = req.query.productId;
     let productBody = req.body;
 
     if (!productBody.name || !productBody.stock || !productBody.price || !productBody.typePrice || !productBody.expirationDate) {
@@ -114,6 +118,7 @@ const update = async (req, res) => {
     Product.findOneAndUpdate({ _id: productId }, productBody, { new: true }).then(productUpdated => {
         if (!productUpdated) {
             return res.status(404).json({
+                "status": "error",
                 "mensaje": "Product not found"
             });
         }
@@ -122,7 +127,29 @@ const update = async (req, res) => {
         });
     }).catch(() => {
         return res.status(404).json({
+            "status": "error",
             "mensaje": "Error while finding and updating product"
+        });
+    });
+}
+
+const deleteFlag = async (req, res) => {
+    let productId = req.query.productId;
+
+    Product.findOneAndUpdate({ _id: productId }, { deleted: true }, { new: true }).then(productUpdated => {
+        if (!productUpdated) {
+            return res.status(404).json({
+                "status": "error",
+                "mensaje": "Product not found"
+            });
+        }
+        return res.status(200).send({
+            "message": "success"
+        });
+    }).catch(() => {
+        return res.status(404).json({
+            "status": "error",
+            "mensaje": "Error while finding and deleting product"
         });
     });
 }
@@ -130,5 +157,6 @@ const update = async (req, res) => {
 module.exports = {
     create,
     getMyProducts,
-    update
+    update,
+    deleteFlag
 }
