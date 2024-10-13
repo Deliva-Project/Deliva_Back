@@ -126,7 +126,8 @@ const update = async (req, res) => {
             });
         }
         return res.status(200).send({
-            "message": "success"
+            "message": "success",
+            "product": productUpdated
         });
     }).catch(() => {
         return res.status(404).json({
