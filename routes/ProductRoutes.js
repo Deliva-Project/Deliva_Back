@@ -19,5 +19,6 @@ router.get("/myProducts", check.auth, ProductController.getMyProducts);
 router.put("/", ProductController.update);
 router.delete("/", ProductController.deleteFlag);
 router.put("/image", upload.single('file'), ProductController.updateImage);
+router.get("/search", check.auth, ProductController.searchMyProducts);
 
 module.exports = router;

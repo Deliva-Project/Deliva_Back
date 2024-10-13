@@ -167,31 +167,77 @@ const updateImage = async (req, res) => {
 
         fs.unlinkSync(req.file.path);
 
-        Product.findOneAndUpdate({ _id: req.body.id }, { photo: response.url }, { new: true }).then(buildingUpdated => {
-            if (!buildingUpdated) {
+        Product.findOneAndUpdate({ _id: req.body.id }, { photo: response.url }, { new: true }).then(productUpdated => {
+            if (!productUpdated) {
                 return res.status(404).json({
-                    status: "error",
-                    mensaje: "Building not found"
+                    "status": "error",
+                    "mensaje": "Product not found"
                 });
             }
 
             return res.status(200).send({
-                status: "success",
-                building: buildingUpdated
+                "status": "success",
+                "product": productUpdated
             });
         }).catch(() => {
             return res.status(404).json({
-                status: "error",
-                mensaje: "Error while finding and updating building"
+                "status": "error",
+                "mensaje": "Error while finding and updating product"
             });
         });
     } catch (error) {
         fs.unlinkSync(req.file.path);
         return res.status(500).json({
-            status: "error",
-            error
+            "status": "error",
+            "mensaje": "Error while updating image"
         });
     }
+}
+
+const searchMyProducts = async (req, res) => {
+    let userId = req.user.id;
+    let storeId;
+
+    try {
+        const store = await Store.findOne({ user: userId });
+      
+        if (!store) {
+          return res.status(404).json({
+            "status": "error",
+            "message": "No store available..."
+          });
+        }
+      
+        storeId = store._id;
+      
+    } catch (error) {
+        return res.status(500).json({
+            "status": "error",
+            "message": "Error while finding store"
+        });
+    }
+
+    let page = req.query.page;
+    let skipvalue = page == 1 ? 0 : (page - 1) * 5;
+    
+    Product.find({ store: storeId, name: { $regex: req.query.productName, $options: 'i' } }).limit(5).skip(skipvalue).then(products => {
+        if (products.length == 0) {
+            return res.status(404).json({
+                "status": "error",
+                "message": "No existen productos"
+            });
+        }
+
+        return res.status(200).json({
+            "status": "success",
+            products
+        });
+    }).catch(() => {
+        return res.status(404).json({
+            "status": "error",
+            "message": "Error while finding products"
+        });
+    });
 }
 
 module.exports = {
@@ -199,5 +245,6 @@ module.exports = {
     getMyProducts,
     update,
     deleteFlag,
-    updateImage
+    updateImage,
+    searchMyProducts
 }
