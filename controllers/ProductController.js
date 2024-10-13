@@ -88,11 +88,14 @@ const getMyProducts = async (req, res) => {
         });
     }
 
-    Product.find({ store: storeId, deleted: false }).then(products => {
-        if (!products) {
+    let page = req.query.page;
+    let skipvalue = page == 1 ? 0 : (page - 1) * 5;
+
+    Product.find({ store: storeId, deleted: false }).limit(5).skip(skipvalue).then(products => {
+        if (products.length == 0) {
             return res.status(404).json({
                 "status": "error",
-                "message": "No products avaliable..."
+                "message": "No existen productos"
             });
         }
 
