@@ -1,6 +1,9 @@
 const Product = require("../models/ProductModel");
 const Store = require("../models/StoreModel");
 
+const cloudinary = require('cloudinary');
+const fs = require('fs');
+
 const create = async (req, res) => {
     let productBody = req.body;
     let userId = req.user.id;
@@ -154,9 +157,43 @@ const deleteFlag = async (req, res) => {
     });
 }
 
+const updateImage = async (req, res) => {
+    try {
+        const response = await cloudinary.v2.uploader.upload(req.file.path, { public_id: req.body.id });
+
+        fs.unlinkSync(req.file.path);
+
+        Product.findOneAndUpdate({ _id: req.body.id }, { photo: response.url }, { new: true }).then(buildingUpdated => {
+            if (!buildingUpdated) {
+                return res.status(404).json({
+                    status: "error",
+                    mensaje: "Building not found"
+                });
+            }
+
+            return res.status(200).send({
+                status: "success",
+                building: buildingUpdated
+            });
+        }).catch(() => {
+            return res.status(404).json({
+                status: "error",
+                mensaje: "Error while finding and updating building"
+            });
+        });
+    } catch (error) {
+        fs.unlinkSync(req.file.path);
+        return res.status(500).json({
+            status: "error",
+            error
+        });
+    }
+}
+
 module.exports = {
     create,
     getMyProducts,
     update,
-    deleteFlag
+    deleteFlag,
+    updateImage
 }
