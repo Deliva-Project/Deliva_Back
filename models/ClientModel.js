@@ -11,9 +11,6 @@ const ClientSchema = Schema({
             },
             district: {
                 type: String
-            },
-            city: {
-                type: String
             }
         }
     ],
