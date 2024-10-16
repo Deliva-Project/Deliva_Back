@@ -2,7 +2,7 @@ const Client = require("../models/ClientModel");
 
 const create = async (req, res) => {
     let clientBody = req.body;
-    let userId = req.query.userId;
+    let userId = req.user.id;
 
     if (!clientBody.addresses || !clientBody.phoneNumber) {
         return res.status(400).json({

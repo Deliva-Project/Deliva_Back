@@ -4,7 +4,7 @@ const ClientController = require("../controllers/ClientController");
 
 const check = require("../authorization/auth");
 
-router.post("/", ClientController.create);
+router.post("/", check.auth, ClientController.create);
 router.get("/myObject", check.auth, ClientController.myObject);
 
 module.exports = router;
