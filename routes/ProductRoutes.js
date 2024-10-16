@@ -17,10 +17,12 @@ const upload = multer({ storage: storage });
 router.post("/", check.auth, ProductController.create);
 router.get("/getMyProducts", check.auth, ProductController.getMyProducts);
 router.get("/getProducts", ProductController.getProducts);
+router.get("/getProductsByStore", ProductController.getProductsByStore);
 router.put("/", ProductController.update);
 router.delete("/", ProductController.deleteFlag);
 router.put("/image", upload.single('file'), ProductController.updateImage);
 router.get("/mySearch", check.auth, ProductController.searchMyProducts);
 router.get("/search", ProductController.searchProducts);
+router.get("/searchByStore", ProductController.searchProductsByStore);
 
 module.exports = router;

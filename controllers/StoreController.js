@@ -78,7 +78,28 @@ const myObject = async (req, res) => {
     });
 }
 
+const list = async (req, res) => {
+    Store.find().then(stores => {
+        if (stores.length == 0) {
+            return res.status(404).json({
+                "status": "error",
+                "message": "No existen tiendas"
+            });
+        }
+
+        return res.status(200).json({
+            stores
+        });
+    }).catch(() => {
+        return res.status(500).json({
+            "status": "error",
+            "message": "Error while finding stores"
+        });
+    });
+}
+
 module.exports = {
     create,
-    myObject
+    myObject,
+    list
 }

@@ -133,6 +133,50 @@ const getProducts = async (req, res) => {
     });
 }
 
+const getProductsByStore = async (req, res) => {
+    let page = req.query.page;
+    let skipvalue = page == 1 ? 0 : (page - 1) * 5;
+    let storeName = req.query.storeName;
+    let storeId;
+
+    try {
+        const store = await Store.findOne({ name: storeName });
+      
+        if (!store) {
+          return res.status(404).json({
+            "status": "error",
+            "message": "No store available..."
+          });
+        }
+      
+        storeId = store._id;
+      
+    } catch (error) {
+        return res.status(500).json({
+            "status": "error",
+            "message": "Error while finding store"
+        });
+    }
+
+    Product.find({ store: storeId, deleted: false }).populate('store').limit(5).skip(skipvalue).then(products => {
+        if (products.length == 0) {
+            return res.status(404).json({
+                "status": "error",
+                "message": "No existen productos"
+            });
+        }
+
+        return res.status(200).json({
+            products
+        });
+    }).catch(() => {
+        return res.status(500).json({
+            "status": "error",
+            "message": "Error while finding products"
+        });
+    });
+}
+
 const update = async (req, res) => {
     let productId = req.query.productId;
     let productBody = req.body;
@@ -287,13 +331,60 @@ const searchProducts = async (req, res) => {
     });
 }
 
+const searchProductsByStore = async (req, res) => {
+    let page = req.query.page;
+    let skipvalue = page == 1 ? 0 : (page - 1) * 5;
+    let storeName = req.query.storeName;
+    let storeId;
+
+    try {
+        const store = await Store.findOne({ name: storeName });
+      
+        if (!store) {
+          return res.status(404).json({
+            "status": "error",
+            "message": "No store available..."
+          });
+        }
+      
+        storeId = store._id;
+      
+    } catch (error) {
+        return res.status(500).json({
+            "status": "error",
+            "message": "Error while finding store"
+        });
+    }
+    
+    Product.find({ store: storeId, name: { $regex: req.query.productName, $options: 'i' } }).populate('store').limit(5).skip(skipvalue).then(products => {
+        if (products.length == 0) {
+            return res.status(404).json({
+                "status": "error",
+                "message": "No existen productos"
+            });
+        }
+
+        return res.status(200).json({
+            "status": "success",
+            products
+        });
+    }).catch(() => {
+        return res.status(404).json({
+            "status": "error",
+            "message": "Error while finding products"
+        });
+    });
+}
+
 module.exports = {
     create,
     getMyProducts,
     getProducts,
+    getProductsByStore,
     update,
     deleteFlag,
     updateImage,
     searchMyProducts,
-    searchProducts
+    searchProducts,
+    searchProductsByStore
 }
