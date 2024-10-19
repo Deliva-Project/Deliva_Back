@@ -50,7 +50,7 @@ const register = async (req, res) => {
             }
 
             return res.status(200).json({
-                "message": "Usuario registrado"
+                "userId": userStored._id
             });
 
         } catch {
