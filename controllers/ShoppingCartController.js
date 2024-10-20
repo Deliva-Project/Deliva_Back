@@ -57,7 +57,7 @@ const create = async (req, res) => {
 const myObject = async (req, res) => {
     let userId = req.user.id;
 
-    ShoppingCart.findOne({ user: userId }).populate({ path: 'products', populate: 'product'}).then(shoppingCart => {
+    ShoppingCart.findOne({ user: userId }).populate({ path: 'products', populate: { path: 'product', populate: 'store' }}).then(shoppingCart => {
         if (!shoppingCart) {
             return res.status(404).json({
                 "status": "error",
