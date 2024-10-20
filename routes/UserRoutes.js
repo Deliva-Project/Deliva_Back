@@ -10,5 +10,6 @@ router.get("/myObject", check.auth, UserController.profile);
 router.post("/sendVerificationCode", UserController.sendVerificationCode);
 router.post("/verifyCode", UserController.verifyCode);
 router.put("/updatePassword", UserController.updatePassword);
+router.put("/updateEmail", check.auth, UserController.updateEmail);
 
 module.exports = router;

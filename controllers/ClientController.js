@@ -63,7 +63,7 @@ const myObject = async (req, res) => {
         if (!client) {
             return res.status(404).json({
                 "status": "error",
-                "message": "Client doesn't exist"
+                "message": "No existe información de cliente"
             });
         }
 
@@ -78,7 +78,31 @@ const myObject = async (req, res) => {
     });
 }
 
+const updateInfo = async (req, res) => {
+    let userId = req.user.id;
+    let clientBody = req.body;
+
+    Client.findOneAndUpdate({ user: userId }, clientBody, { new: true }).then(clientUpdated => {
+        if (!clientUpdated) {
+            return res.status(404).json({
+                "status": "error",
+                "mensaje": "Client not found"
+            });
+        }
+        return res.status(200).send({
+            "message": "success",
+            "client": clientUpdated
+        });
+    }).catch(() => {
+        return res.status(404).json({
+            "status": "error",
+            "mensaje": "Error while finding and updating client"
+        });
+    });
+}
+
 module.exports = {
     create,
-    myObject
+    myObject,
+    updateInfo
 }

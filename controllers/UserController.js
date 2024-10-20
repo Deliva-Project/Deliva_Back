@@ -253,11 +253,37 @@ const updatePassword = async (req, res) => {
     });
 }
 
+const updateEmail = async (req, res) => {
+    let userId = req.user.id;
+    let userBody = req.body;
+
+    User.findOneAndUpdate({ _id: userId }, { email: userBody.email }, { new: true }).then(userUpdated => {
+        if (!userUpdated) {
+            return res.status(404).json({
+                "status": "error",
+                "mensaje": "User not found"
+            });
+        }
+        return res.status(200).send({
+            "message": "success",
+            "user": userUpdated
+        });
+    }).catch((e) => {
+        console.log(e);
+        
+        return res.status(404).json({
+            "status": "error",
+            "mensaje": "Error while finding and updating user"
+        });
+    });
+}
+
 module.exports = {
     register,
     loginUser,
     profile,
     sendVerificationCode,
     verifyCode,
-    updatePassword
+    updatePassword,
+    updateEmail
 }
