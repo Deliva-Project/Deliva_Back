@@ -30,6 +30,8 @@ const ClientRoutes = require("./routes/ClientRoutes");
 app.use("/api/clients", ClientRoutes);
 const ShoppingCartRoutes = require("./routes/ShoppingCartRoutes");
 app.use("/api/shopping-carts", ShoppingCartRoutes);
+const SaleRoutes = require("./routes/SaleRoutes");
+app.use("/api/sales", SaleRoutes);
 
 app.get("/test-route", (_req, res) => {
     return res.status(200).json({

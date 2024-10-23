@@ -16,10 +16,6 @@ const SaleSchema = Schema({
             }
         }
     ],
-    rider: {
-        type: Schema.ObjectId,
-        ref: "Rider"
-    },
     client: {
         type: Schema.ObjectId,
         ref: "Client"
@@ -27,12 +23,20 @@ const SaleSchema = Schema({
     paymentMethod: {
         type: String
     },
+    sendMethod: {
+        type: String
+    },
+    addressId: {
+        type: Schema.Types.ObjectId,
+        ref: "Client.addresses"
+    },
     date: {
         type: Date,
         default: Date.now
     },
     status: {
-        type: String
+        type: String,
+        default: "Confirmado"
     }
 });
 
