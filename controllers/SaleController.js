@@ -66,7 +66,7 @@ const create = async (req, res) => {
     }
 }
 
-const myObjects = async (req, res) => {
+const myObjectsClient = async (req, res) => {
     let userId = req.user.id;
     let clientId;
 
@@ -111,5 +111,5 @@ const myObjects = async (req, res) => {
 
 module.exports = {
     create,
-    myObjects
+    myObjectsClient
 }
