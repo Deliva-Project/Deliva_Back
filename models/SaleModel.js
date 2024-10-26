@@ -26,9 +26,8 @@ const SaleSchema = Schema({
     sendMethod: {
         type: String
     },
-    addressId: {
-        type: Schema.Types.ObjectId,
-        ref: "Client.addresses"
+    address: {
+        type: String
     },
     date: {
         type: Date,

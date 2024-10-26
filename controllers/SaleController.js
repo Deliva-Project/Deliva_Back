@@ -38,7 +38,7 @@ const create = async (req, res) => {
         client: clientId,
         paymentMethod: saleBody.paymentMethod,
         sendMethod: saleBody.sendMethod,
-        addressId: saleBody.addressId
+        address: saleBody.address
     }
 
     let sale_to_save = new Sale(saleData);
