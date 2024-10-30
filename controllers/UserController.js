@@ -157,10 +157,10 @@ const sendVerificationCode = async (req, res) => {
         "<p>" + code + "</p>" + 
         "<br><br><br>" + 
         "<p>Este correo se encuentra desatendido.<p/>" + 
-        "<p>Saludos desde el equipo de seguridad de Piatto.</p>";
+        "<p>Saludos desde el equipo de seguridad de Deliva.</p>";
 
         const { error } = await resend.emails.send({
-            from: "forget-password-piatto@socialsynergy.pe",
+            from: "forget-password-deliva@socialsynergy.pe",
             to: user.email,
             subject: "Código de verificación",
             html: emailTemplate

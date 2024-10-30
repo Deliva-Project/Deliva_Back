@@ -1,7 +1,7 @@
 const jwt = require("jwt-simple");
 const moment = require("moment");
 
-const secret = "Secret_Key_Piatto_Back_022506";
+const secret = "Secret_Key_Deliva_Back_022506";
 
 const createToken = (user) => {
     const payLoad = {

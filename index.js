@@ -6,7 +6,7 @@ const socketIo = require('socket.io');
 const dotenv = require('dotenv');
 dotenv.config();
 
-console.log("Piatto backend api started");
+console.log("Deliva backend api started");
 
 connection(process.env.MONGO_URI);
 

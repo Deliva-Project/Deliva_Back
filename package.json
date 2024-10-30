@@ -1,7 +1,7 @@
 {
-  "name": "piatto_back",
+  "name": "deliva_back",
   "version": "1.0.0",
-  "description": "Backend API para Piatto",
+  "description": "Backend API para Deliva",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
