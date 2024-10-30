@@ -1,5 +1,6 @@
 const Sale = require("../models/SaleModel");
 const Client = require("../models/ClientModel");
+const Store = require("../models/StoreModel");
 
 const create = async (req, res) => {
     let saleBody = req.body;
@@ -108,8 +109,51 @@ const myObjectsClient = async (req, res) => {
     });
 }
 
+const myObjectsStore = async (req, res) => {
+    let userId = req.user.id;
+    let storeId;
+
+    try {
+        const store = await Store.findOne({ user: userId });
+      
+        if (!store) {
+          return res.status(404).json({
+            "status": "error",
+            "message": "No store available..."
+          });
+        }
+      
+        storeId = store._id;
+      
+    } catch (error) {
+        return res.status(500).json({
+            "status": "error",
+            "message": "Error while finding store"
+        });
+    }
+
+    Sale.find({ store: storeId }).populate(['store', 'client', { path: 'detail', populate: { path: 'product' }} ]).then(sales => {
+        if (sales.length == 0) {
+            return res.status(404).json({
+                "status": "error",
+                "message": "No existen ventas realizadas"
+            });
+        }
+
+        return res.status(200).json({
+            sales
+        });
+    }).catch(() => {
+        return res.status(404).json({
+            "status": "error",
+            "message": "Error while finding sales"
+        });
+    });
+}
+
 
 module.exports = {
     create,
-    myObjectsClient
+    myObjectsClient,
+    myObjectsStore
 }

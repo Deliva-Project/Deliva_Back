@@ -6,5 +6,6 @@ const check = require("../authorization/auth");
 
 router.post("/", check.auth, SaleController.create);
 router.get("/myObjectsClient", check.auth, SaleController.myObjectsClient);
+router.get("/myObjectsStore", check.auth, SaleController.myObjectsStore);
 
 module.exports = router;
