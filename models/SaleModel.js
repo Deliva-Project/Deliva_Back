@@ -35,7 +35,7 @@ const SaleSchema = Schema({
     },
     status: {
         type: String,
-        default: "Confirmado"
+        default: "Aceptado"
     }
 });
 

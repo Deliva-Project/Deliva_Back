@@ -37,12 +37,18 @@ app.use("/api/sales", SaleRoutes);
 
 app.get("/test-route", (_req, res) => {
     return res.status(200).json({
-        "version": "1.0.0"
+        "version": "1.1.0"
     });
 });
 
 const server = http.createServer(app);
-const io = socketIo(server);
+const io = socketIo(server, {
+    cors: {
+        origin: ['http://localhost:4200'],
+        methods: ['GET', 'POST'],
+        credentials: true,
+    },
+});
 
 const requests = require('./socket-requests/requests');
 requests(io);
