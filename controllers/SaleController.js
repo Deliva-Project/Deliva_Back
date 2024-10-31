@@ -132,7 +132,7 @@ const myObjectsStore = async (req, res) => {
         });
     }
 
-    Sale.find({ store: storeId }).populate(['store', 'client', { path: 'detail', populate: { path: 'product' }} ]).then(sales => {
+    Sale.find({ store: storeId }).populate(['store', { path: 'client', populate: 'user' }, { path: 'detail', populate: 'product' } ]).then(sales => {
         if (sales.length == 0) {
             return res.status(404).json({
                 "status": "error",
