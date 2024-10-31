@@ -42,13 +42,7 @@ app.get("/test-route", (_req, res) => {
 });
 
 const server = http.createServer(app);
-const io = socketIo(server, {
-    cors: {
-        origin: ['http://localhost:4200'],
-        methods: ['GET', 'POST'],
-        credentials: true,
-    },
-});
+const io = socketIo(server);
 
 const requests = require('./socket-requests/requests');
 requests(io);
