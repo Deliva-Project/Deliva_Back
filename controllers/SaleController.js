@@ -151,9 +151,33 @@ const myObjectsStore = async (req, res) => {
     });
 }
 
+const updateSaleStatus = async (req, res) => {
+    let orderBody = req.body;
+
+    Sale.findOneAndUpdate({ _id: orderBody._id }, { status: orderBody.status }, { new: true }).then(saleUpdated => {
+        if (!saleUpdated) {
+            return res.status(404).json({
+                "status": "error",
+                "mensaje": "Sale not found"
+            });
+        }
+        return res.status(200).send({
+            "message": "success",
+            "sale": saleUpdated
+        });
+    }).catch((e) => {
+        console.log(e);
+        
+        return res.status(404).json({
+            "status": "error",
+            "mensaje": "Error while finding and updating sale"
+        });
+    });
+}
 
 module.exports = {
     create,
     myObjectsClient,
-    myObjectsStore
+    myObjectsStore,
+    updateSaleStatus
 }
