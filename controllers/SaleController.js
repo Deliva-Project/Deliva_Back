@@ -90,7 +90,7 @@ const myObjectsClient = async (req, res) => {
         });
     }
 
-    Sale.find({ client: clientId }).then(sales => {
+    Sale.find({ client: clientId }).populate(['store', { path: 'client', populate: 'user' }, { path: 'detail', populate: 'product' } ]).then(sales => {
         if (sales.length == 0) {
             return res.status(404).json({
                 "status": "error",
