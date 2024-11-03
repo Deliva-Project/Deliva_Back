@@ -37,7 +37,7 @@ app.use("/api/sales", SaleRoutes);
 
 app.get("/test-route", (_req, res) => {
     return res.status(200).json({
-        "version": "1.1.0"
+        "version": "1.5.0"
     });
 });
 

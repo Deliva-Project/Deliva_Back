@@ -92,8 +92,6 @@ const updateProducts = async (req, res) => {
             "shoppingCart": shopppingCartUpdated
         });
     }).catch((e) => {
-        console.log(e);
-        
         return res.status(404).json({
             "status": "error",
             "mensaje": "Error while finding and updating shopping cart"

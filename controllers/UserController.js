@@ -269,8 +269,6 @@ const updateEmail = async (req, res) => {
             "user": userUpdated
         });
     }).catch((e) => {
-        console.log(e);
-        
         return res.status(404).json({
             "status": "error",
             "mensaje": "Error while finding and updating user"

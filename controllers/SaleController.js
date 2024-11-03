@@ -58,8 +58,6 @@ const create = async (req, res) => {
             "sale": saleStored
         });
     } catch (error) {
-        console.log(error);
-        
         return res.status(500).json({
             "status": "error",
             "message": "Error while saving sale"
@@ -166,8 +164,6 @@ const updateSaleStatus = async (req, res) => {
             "sale": saleUpdated
         });
     }).catch((e) => {
-        console.log(e);
-        
         return res.status(404).json({
             "status": "error",
             "mensaje": "Error while finding and updating sale"
