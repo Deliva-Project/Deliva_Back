@@ -37,7 +37,7 @@ module.exports = (io) => {
         socket.on('changeOrderStatus', (arg) => {
             const saleSocket = saleSockets[arg.saleId];
             if (saleSocket) {
-                saleSocket.emit('notificationChangeOrderStatusSale');
+                saleSocket.emit('notificationChangeOrderStatusSale', arg.newStatus);
             }
 
             const clientSocket = clientSockets[arg.userId];
